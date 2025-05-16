@@ -57,7 +57,7 @@ export const getUserProfile = async (req, res) => {
 }
 
 export const logoutUser = async (req, res) => {
-    const token = req.cookies.token || req.headers.authorization.split[' '][1]; // Get the token from the request cookies
+    const token = req.cookies.token || req.headers.authorization.split(' ')[1]; // Get the token from the request cookies
     console.log("token",token);
     await blacklistTokenModel.create({token}); // Blacklist the token (not implemented in this code)
     if(!token) {

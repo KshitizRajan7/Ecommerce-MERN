@@ -1,8 +1,33 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { UserDataContext } from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  const {user, setUser} = useContext(UserDataContext);
+  const navigate = useNavigate();
+
+  const handleSubmit = async(e)=>{
+    e.preventDefault();
+    const userData = {
+      email:email,
+      password:password
+    }
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`,userData);
+    if(response.status === 200){
+      const data = response.data;
+      setUser(data.user);
+      localStorage.setItem('token',data.token);
+      navigate('/homepage');
+    }
+    setEmail('');
+    setPassword('');
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
@@ -11,7 +36,7 @@ export default function LoginPage() {
           Login to Your Account
         </h2>
 
-        <form className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-5">
           {/* Email Input */}
           <div>
             <label className="block mb-1 font-medium text-gray-700">Email</label>
@@ -19,6 +44,8 @@ export default function LoginPage() {
               type="email"
               placeholder="you@example.com"
               required
+              value={email}
+              onChange={(e)=>setEmail(e.target.value)}
               className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -31,6 +58,8 @@ export default function LoginPage() {
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter your password"
                 required
+                value={password}
+                onChange={(e)=>setPassword(e.target.value)}
                 className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <button

@@ -6,6 +6,7 @@ import UserRegistrationpage from './pages/UserRegistrationpage'
 import SellerLoginpage from './pages/SellerLoginpage'
 import SellerRegistrationpage from './pages/SellerRegistrationpage'
 import AdminLoginpage from './pages/AdminLoginpage'
+import UserLogoutpage from './pages/UserLogoutpage'
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/seller-login" element={<SellerLoginpage />} />
         <Route path="/seller-registration" element={<SellerRegistrationpage />} />
         <Route path="/admin-login" element={<AdminLoginpage />} />
+        <Route path='/user/logout' element={<UserLogoutpage/>}/>
       </Routes>
     </div>
   )

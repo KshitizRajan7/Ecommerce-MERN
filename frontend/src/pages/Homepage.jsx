@@ -1,6 +1,7 @@
 // HelmetHomePage.jsx
-import React from 'react';
+import React, { useContext } from 'react';
 import { ShoppingCart, Star, ShieldCheck } from "lucide-react";
+import { UserDataContext } from '../context/UserContext';
 
 const helmets = [
   { name: "RiderX Pro", price: "$120", img: "/helmets/helmet1.jpg" },
@@ -9,18 +10,33 @@ const helmets = [
 ];
 
 export default function HelmetHomePage() {
+  const {user,setUser} = useContext(UserDataContext);
+  console.log(user);
   return (
     <main className="bg-white text-gray-900">
-      {/* Header with Login Button */}
-  <header className="flex justify-between items-center px-6 py-4 shadow-md bg-white">
-    <h1 className="text-2xl font-bold text-gray-800">HelmetStore</h1>
-    <a
-      href="/login"
-      className="bg-indigo-600 text-white px-4 py-2 rounded-xl hover:bg-indigo-700 transition"
-    >
-      Login
-    </a>
-  </header>
+            {/* Header with Login/User Info */}
+      <header className="flex justify-between items-center px-6 py-4 shadow-md bg-white">
+
+     <h1 className="text-2xl font-bold text-gray-800">HelmetStore</h1>
+        
+        {user ? (
+          <div className="flex items-center space-x-4">
+            <span className="text-gray-700">Welcome, {user.firstName}</span>
+            <button
+              className="bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-700 transition"
+            >
+              Logout
+            </button>
+          </div>
+        ) : (
+          <a
+            href="/login"
+            className="bg-indigo-600 text-white px-4 py-2 rounded-xl hover:bg-indigo-700 transition"
+          >
+            Login
+          </a>
+        )}
+      </header>
       {/* Hero Section */}
       <section className="bg-gray-900 text-white py-20 px-6 text-center">
         <h1 className="text-5xl font-bold mb-4">Premium Helmets for Every Ride</h1>

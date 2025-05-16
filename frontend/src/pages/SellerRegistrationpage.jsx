@@ -1,10 +1,83 @@
-// SellerRegisterPage.jsx
 import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 
 export default function SellerRegisterPage() {
+  // Form state
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    businessEmail: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  // Show/hide password toggles
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  // Error state
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  // Handle input changes
+  const handleChange = async (e) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  // Handle form submit
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newUser ={
+      fullName:{
+        firstName:firstName,
+        lastName:lastName
+      },
+      email:email,
+      password:password
+    }
+
+    // const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/`)
+
+    setError("");
+    setSuccess("");
+
+    // Basic validation: password match
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    // TODO: Call your backend API here, example:
+    // fetch("/api/seller/register", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify(formData),
+    // })
+    //   .then(res => res.json())
+    //   .then(data => {
+    //     if (data.success) {
+    //       setSuccess("Registration successful! You can now login.");
+    //     } else {
+    //       setError(data.message || "Registration failed.");
+    //     }
+    //   })
+    //   .catch(() => setError("Network error, please try again."));
+
+    // For now, simulate success:
+    // setTimeout(() => {
+    //   setSuccess("Registration successful! You can now login.");
+    //   setFormData({
+    //     firstName: "",
+    //     lastName: "",
+    //     businessEmail: "",
+    //     password: "",
+    //     confirmPassword: "",
+    //   });
+    // }, 1000);
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
@@ -13,37 +86,48 @@ export default function SellerRegisterPage() {
           Register as Seller
         </h2>
 
-        <form className="space-y-5">
-        {/* First and Last Name */}
-<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-  <div>
-    <label className="block mb-1 font-medium text-gray-700">First Name</label>
-    <input
-      type="text"
-      placeholder="John"
-      required
-      className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-    />
-  </div>
-  <div>
-    <label className="block mb-1 font-medium text-gray-700">Last Name</label>
-    <input
-      type="text"
-      placeholder="Doe"
-      required
-      className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-    />
-  </div>
-</div>
+        {error && <p className="mb-4 text-red-600 text-center">{error}</p>}
+        {success && <p className="mb-4 text-green-600 text-center">{success}</p>}
 
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {/* First and Last Name */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block mb-1 font-medium text-gray-700">First Name</label>
+              <input
+                type="text"
+                name="firstName"
+                placeholder="John"
+                required
+                value={formData.firstName}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block mb-1 font-medium text-gray-700">Last Name</label>
+              <input
+                type="text"
+                name="lastName"
+                placeholder="Doe"
+                required
+                value={formData.lastName}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          </div>
 
-          {/* Business Email */}
+          {/* email */}
           <div>
-            <label className="block mb-1 font-medium text-gray-700">Business Email</label>
+            <label className="block mb-1 font-medium text-gray-700">email</label>
             <input
               type="email"
+              name="businessEmail"
               placeholder="seller@yourbusiness.com"
               required
+              value={formData.businessEmail}
+              onChange={handleChange}
               className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
@@ -54,8 +138,11 @@ export default function SellerRegisterPage() {
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
+                name="password"
                 placeholder="Create a password"
                 required
+                value={formData.password}
+                onChange={handleChange}
                 className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
               <button
@@ -74,8 +161,11 @@ export default function SellerRegisterPage() {
             <div className="relative">
               <input
                 type={showConfirmPassword ? "text" : "password"}
+                name="confirmPassword"
                 placeholder="Confirm your password"
                 required
+                value={formData.confirmPassword}
+                onChange={handleChange}
                 className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
               <button
